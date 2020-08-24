@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import io.restassured.RestAssured;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +16,7 @@ public class NumberServiceIT {
     @ParameterizedTest
     @MethodSource("testData")
     public void checkNumber(int input, String expected) {
+        sleep(input);
         var actual = apiCall(input);
         Assertions.assertEquals(expected, actual);
     }
@@ -32,8 +34,15 @@ public class NumberServiceIT {
         return Stream.of(
 //                Arguments.of(1, "one"),
                 Arguments.of(2, "two"),
-                Arguments.of(3, "three")
-//                Arguments.of(Integer.MAX_VALUE, "huge number")
+//                Arguments.of(3, "three"),
+                Arguments.of(30000, "huge number")
         );
+    }
+
+    @SneakyThrows
+    private static int sleep(int msec) {
+        log.info("sleeping for {} msec...", msec);
+        Thread.sleep(msec);
+        return msec;
     }
 }
