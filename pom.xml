@@ -231,7 +231,7 @@
                                 </ports>
                                 <wait>
                                     <http>
-                                        <url>http://${number.service.host}:28080/api/hello</url>
+                                        <url>http://${number.service.host}:28080/actuator/info</url>
                                         <method>GET</method>
                                         <status>200</status>
                                     </http>
