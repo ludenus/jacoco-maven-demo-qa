@@ -1,108 +1,308 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.3.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>demo-qa</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>demo-qa</name>
-	<description>Demo project for Jacoco</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<properties>
-		<java.version>14</java.version>
-		<jacoco.agent.version>0.8.5</jacoco.agent.version>
-	</properties>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-	<dependencies>
+    <groupId>com.example</groupId>
+    <artifactId>demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>demo</name>
+    <description>Demo project for Jacoco</description>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
+    <properties>
+        <java.version>14</java.version>
+        <jacoco.agent.version>0.8.5</jacoco.agent.version>
+        <java.rmi.server.hostname>${env.DOCKER_HOST_IP}</java.rmi.server.hostname>
+        <jmx.remote.port>22090</jmx.remote.port>
+        <jmx.remote.rmi.port>22898</jmx.remote.rmi.port>
+    </properties>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
+    <dependencies>
 
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <!--            <version>1.8.0-beta2</version>-->
+        </dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <!--            <version>1.8.0-beta2</version>-->
+        </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<!-- https://github.com/maven-download-plugin/maven-download-plugin -->
-				<groupId>com.googlecode.maven-download-plugin</groupId>
-				<artifactId>download-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<executions>
-					<execution>
-						<id>wget-jacoco</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<url>https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/${jacoco.agent.version}/org.jacoco.agent-${jacoco.agent.version}-runtime.jar</url>
-							<unpack>false</unpack>
-							<outputDirectory>${project.basedir}/src/test/resources/jacoco</outputDirectory>
-							<md5>5f6d04dffaf61c22362ce742f78e3097</md5>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
-				<executions>
-					<execution>
-						<id>default-prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>default-report</id>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>default-check</id>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<rule>
-									<element>BUNDLE</element>
-									<limits>
-										<limit>
-											<counter>COMPLEXITY</counter>
-											<value>COVEREDRATIO</value>
-											<minimum>0.60</minimum>
-										</limit>
-									</limits>
-								</rule>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+        <!--        <dependency>-->
+        <!--            <groupId>ch.qos.logback</groupId>-->
+        <!--            <artifactId>logback-classic</artifactId>-->
+        <!--&lt;!&ndash;            <version>1.2.3</version>&ndash;&gt;-->
+        <!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>compile</scope>
+            <!--			<version>1.18.12</version>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <!--			<version>5.6.2</version>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <!--            <version>5.2.0</version>-->
+            <!--            <scope>test</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <!--			<version>5.6.2</version>-->
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--  do not binary files in source code repo, download them instead -->
+            <plugin>
+                <!-- https://github.com/maven-download-plugin/maven-download-plugin -->
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>wget-jacoco</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>
+                                https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/${jacoco.agent.version}/org.jacoco.agent-${jacoco.agent.version}-runtime.jar
+                            </url>
+                            <unpack>false</unpack>
+                            <outputDirectory>${project.basedir}/src/test/resources/jacoco</outputDirectory>
+                            <md5>5f6d04dffaf61c22362ce742f78e3097</md5>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- http://jacocotogo.helmetsrequired.org/examples/example1.html -->
+                <groupId>org.helmetsrequired</groupId>
+                <artifactId>jacocotogo-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>get_integration_test_coverage</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>jmx</goal>
+                        </goals>
+                        <configuration>
+                            <serviceURL>
+                                service:jmx:rmi:///jndi/rmi://${java.rmi.server.hostname}:${jmx.remote.port}/jmxrmi
+                            </serviceURL>
+                            <outputFile>${project.build.directory}/jacoco-dock.exec</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.agent.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent-integration</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report-integration</id>
+                        <goals>
+                            <goal>report-integration</goal>
+                        </goals>
+                        <configuration>
+
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>merge-results</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>jacoco*.exec</include>
+                                    </includes>
+                                </fileSet>
+                                <fileSet>
+                                    <directory>${project.basedir}/../jacoco-maven-demo/target</directory>
+                                    <includes>
+                                        <include>jacoco*.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                            <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>default-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+                            <haltOnFailure>true</haltOnFailure>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>COMPLEXITY</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.90</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>
+
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.33.0</version>
+                <configuration>
+                    <showLogs>true</showLogs>
+
+                    <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
+                    <images>
+
+                        <image>
+                            <name>jacoco-maven-demo:0.0.1</name>
+                            <alias>jacoco-maven-demo</alias>
+                            <run>
+                                <log>
+                                    <file>${project.build.directory}/jacoco-maven-demo.docker.log</file>
+                                </log>
+                                <ports>
+                                    <port>28080:8080</port>
+                                    <port>22090:22090</port>
+                                    <port>22898:22898</port>
+                                </ports>
+                                <wait>
+                                    <http>
+                                        <url>http://${env.DOCKER_HOST_IP}:28080/api/hello</url>
+                                        <method>GET</method>
+                                        <status>200</status>
+                                    </http>
+                                    <time>10000</time> <!-- milliseconds -->
+                                </wait>
+                                <volumes>
+                                    <bind>
+                                        <volume>${project.basedir}/src/test/resources/jacoco:/jacoco</volume>
+                                    </bind>
+                                </volumes>
+                                <env>
+                                    <JAVA_OPTS>-server -Xms128m -Xmx128m -Dcom.sun.management.jmxremote=true
+                                        -Dcom.sun.management.jmxremote.local.only=false
+                                        -Dcom.sun.management.jmxremote.port=${jmx.remote.port}
+                                        -Dcom.sun.management.jmxremote.rmi.port=${jmx.remote.rmi.port}
+                                        -Djava.rmi.server.hostname=${java.rmi.server.hostname}
+                                        -Dcom.sun.management.jmxremote.ssl=false
+                                        -Dcom.sun.management.jmxremote.authenticate=false
+                                        -javaagent:/jacoco/org.jacoco.agent-${jacoco.agent.version}-runtime.jar=destfile=/tmp/jacoco-it.exec,jmx=true
+                                    </JAVA_OPTS>
+                                </env>
+                                <namingStrategy>alias</namingStrategy>
+                            </run>
+                        </image>
+
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
 
 </project>
