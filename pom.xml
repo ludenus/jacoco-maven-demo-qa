@@ -160,7 +160,7 @@
                             <serviceURL>
                                 service:jmx:rmi:///jndi/rmi://${java.rmi.server.hostname}:${jmx.remote.port}/jmxrmi
                             </serviceURL>
-                            <outputFile>${project.build.directory}/jacoco-dock.exec</outputFile>
+                            <outputFile>${project.build.directory}/jacoco-docker.exec</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -250,7 +250,7 @@
                                         -Djava.rmi.server.hostname=${java.rmi.server.hostname}
                                         -Dcom.sun.management.jmxremote.ssl=false
                                         -Dcom.sun.management.jmxremote.authenticate=false
-                                        -javaagent:/jacoco/lib/jacocoagent.jar=destfile=/tmp/jacoco-it.exec,jmx=true
+                                        -javaagent:/jacoco/lib/jacocoagent.jar=destfile=/tmp/jacoco-docker.exec,jmx=true
                                     </JAVA_OPTS>
                                 </env>
                                 <namingStrategy>alias</namingStrategy>
