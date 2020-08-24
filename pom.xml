@@ -18,8 +18,9 @@
 
     <properties>
         <java.version>14</java.version>
-        <jacoco.agent.version>0.8.5</jacoco.agent.version>
-        <java.rmi.server.hostname>${env.DOCKER_HOST_IP}</java.rmi.server.hostname>
+        <jacoco.version>0.8.5</jacoco.version>
+        <number.service.host>0.0.0.0</number.service.host>
+        <java.rmi.server.hostname>0.0.0.0</java.rmi.server.hostname>
         <jmx.remote.port>22090</jmx.remote.port>
         <jmx.remote.rmi.port>22898</jmx.remote.rmi.port>
     </properties>
@@ -72,6 +73,20 @@
             <!--			<version>5.6.2</version>-->
         </dependency>
 
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <!--            <version>4.3.1</version>-->
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -103,7 +118,7 @@
                 </executions>
             </plugin>
 
-            <!--  do not binary files in source code repo, download them instead -->
+            <!--  do not keep binary files in source code repo, download them instead -->
             <plugin>
                 <!-- https://github.com/maven-download-plugin/maven-download-plugin -->
                 <groupId>com.googlecode.maven-download-plugin</groupId>
@@ -111,20 +126,21 @@
                 <version>1.6.0</version>
                 <executions>
                     <execution>
-                        <id>wget-jacoco</id>
+                        <id>wget-jacoco-cli</id>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>wget</goal>
                         </goals>
                         <configuration>
                             <url>
-                                https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/${jacoco.agent.version}/org.jacoco.agent-${jacoco.agent.version}-runtime.jar
+                                https://repo1.maven.org/maven2/org/jacoco/jacoco/${jacoco.version}/jacoco-${jacoco.version}.zip
                             </url>
-                            <unpack>false</unpack>
+                            <unpack>true</unpack>
                             <outputDirectory>${project.basedir}/src/test/resources/jacoco</outputDirectory>
-                            <md5>5f6d04dffaf61c22362ce742f78e3097</md5>
+                            <md5>9c84437528104c68283ef9cc30b20d51</md5>
                         </configuration>
                     </execution>
+
                 </executions>
             </plugin>
 
@@ -153,28 +169,13 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.agent.version}</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <id>default-prepare-agent-integration</id>
                         <goals>
                             <goal>prepare-agent-integration</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>default-report</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-report-integration</id>
-                        <goals>
-                            <goal>report-integration</goal>
-                        </goals>
-                        <configuration>
-
-                        </configuration>
                     </execution>
 
                     <execution>
@@ -199,29 +200,6 @@
                                 </fileSet>
                             </fileSets>
                             <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>default-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
-                            <haltOnFailure>true</haltOnFailure>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>COMPLEXITY</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.90</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
                         </configuration>
                     </execution>
                 </executions>
@@ -253,7 +231,7 @@
                                 </ports>
                                 <wait>
                                     <http>
-                                        <url>http://${env.DOCKER_HOST_IP}:28080/api/hello</url>
+                                        <url>http://${number.service.host}:28080/api/hello</url>
                                         <method>GET</method>
                                         <status>200</status>
                                     </http>
@@ -272,7 +250,7 @@
                                         -Djava.rmi.server.hostname=${java.rmi.server.hostname}
                                         -Dcom.sun.management.jmxremote.ssl=false
                                         -Dcom.sun.management.jmxremote.authenticate=false
-                                        -javaagent:/jacoco/org.jacoco.agent-${jacoco.agent.version}-runtime.jar=destfile=/tmp/jacoco-it.exec,jmx=true
+                                        -javaagent:/jacoco/lib/jacocoagent.jar=destfile=/tmp/jacoco-it.exec,jmx=true
                                     </JAVA_OPTS>
                                 </env>
                                 <namingStrategy>alias</namingStrategy>
@@ -299,8 +277,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
         </plugins>
     </build>
 
