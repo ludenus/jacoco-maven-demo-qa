@@ -87,6 +87,24 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco</artifactId>
+            <version>0.8.5</version>
+            <type>zip</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>org.jacoco.examples</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>org.jacoco.doc</artifactId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -118,31 +136,32 @@
                 </executions>
             </plugin>
 
-            <!--  do not keep binary files in source code repo, download them instead -->
-            <plugin>
-                <!-- https://github.com/maven-download-plugin/maven-download-plugin -->
-                <groupId>com.googlecode.maven-download-plugin</groupId>
-                <artifactId>download-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <id>wget-jacoco-cli</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>wget</goal>
-                        </goals>
-                        <configuration>
-                            <url>
-                                https://repo1.maven.org/maven2/org/jacoco/jacoco/${jacoco.version}/jacoco-${jacoco.version}.zip
-                            </url>
-                            <unpack>true</unpack>
-                            <outputDirectory>${project.basedir}/src/test/resources/jacoco</outputDirectory>
-                            <md5>9c84437528104c68283ef9cc30b20d51</md5>
-                        </configuration>
-                    </execution>
+            <!-- wget plugin does not work with proxy -->
+<!--            &lt;!&ndash;  do not keep binary files in source code repo, download them instead &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                &lt;!&ndash; https://github.com/maven-download-plugin/maven-download-plugin &ndash;&gt;-->
+<!--                <groupId>com.googlecode.maven-download-plugin</groupId>-->
+<!--                <artifactId>download-maven-plugin</artifactId>-->
+<!--                <version>1.6.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>wget-jacoco-cli</id>-->
+<!--                        <phase>pre-integration-test</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>wget</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <url>-->
+<!--                                https://repo1.maven.org/maven2/org/jacoco/jacoco/${jacoco.version}/jacoco-${jacoco.version}.zip-->
+<!--                            </url>-->
+<!--                            <unpack>true</unpack>-->
+<!--                            <outputDirectory>${project.basedir}/src/test/resources/jacoco</outputDirectory>-->
+<!--                            <md5>9c84437528104c68283ef9cc30b20d51</md5>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
 
-                </executions>
-            </plugin>
+<!--                </executions>-->
+<!--            </plugin>-->
 
             <plugin>
                 <!-- http://jacocotogo.helmetsrequired.org/examples/example1.html -->
@@ -235,7 +254,7 @@
                                         <method>GET</method>
                                         <status>200</status>
                                     </http>
-                                    <time>10000</time> <!-- milliseconds -->
+                                    <time>30000</time> <!-- milliseconds -->
                                 </wait>
                                 <volumes>
                                     <bind>
