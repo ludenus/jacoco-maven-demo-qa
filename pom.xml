@@ -11,10 +11,10 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>demo-qa</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
-    <description>Demo project for Jacoco</description>
+    <name>demo-qa</name>
+    <description>Demo QA project for Jacoco</description>
 
     <properties>
         <java.version>14</java.version>

@@ -1,6 +1,9 @@
 # jacoco-maven-demo-qa
 test project for jacoco-maven-demo
 
+## PREREQUISITES
+JDK 14
+
 ```
 mvn clean verify
 ```
